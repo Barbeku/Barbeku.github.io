@@ -25,3 +25,5 @@ function drag(query = '.draggblejs', rotate = false, transition = '0'){
     })
   })
 }
+
+console.log('draggblejs work')
