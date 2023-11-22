@@ -111,7 +111,6 @@ if(document.querySelector('.schedule')){
   let countLesson = 0
   let lessons = schedule[day].reduce((totalString, item) => {
     countLesson++
-    console.log(item)
     return totalString += `
       <div class="lesson">
         <span>${countLesson}. ${item}</span>
@@ -121,21 +120,41 @@ if(document.querySelector('.schedule')){
   }, `<h2 class="day_today">${day}</h2>`)
   scheduleToday.innerHTML = `<section class="day">${lessons}</section>`
 
-  let date = new Date()
-  //let nowTime = date.getHours() * 60 + date.getMinutes()
-  let nowTime = 680
-    console.log(nowTime)
   //nowTime = convertIntoMinute('10:40')
 
-  let numOfCurrentLesson = callSchedule.map((item, index) => {
-    if(item > nowTime){
-      return index
-    }
-  })
-    .filter(Boolean)[0]
 
-  console.log(numOfCurrentLesson)
-  document.querySelectorAll('span')[numOfCurrentLesson].style.background = 'rgba(255, 70, 70, 0.8)'
+
+  function calcNowLesson(){
+    let date = new Date()
+    let nowTime = date.getHours() * 60 + date.getMinutes()
+    let timeToNextLesson = []
+
+    let numOfCurrentLesson = callSchedule.map((item, index, array) => {
+      if(item > nowTime){
+        timeToNextLesson.push(array[index] - nowTime)
+
+        return index
+      }
+    })
+      .filter(Boolean)[0]
+
+    try{
+      document.querySelector('.time_to_next_lesson').textContent = timeToNextLesson[0]
+      document.querySelectorAll('span')[numOfCurrentLesson - 1].style.background = 'rgba(255, 70, 70, 0.8)'
+    }
+    catch(error){
+      console.warn(error)
+    }
+    finally{
+      window.requestAnimationFrame(calcNowLesson)
+    }
+  }
+  window.requestAnimationFrame(calcNowLesson)
+
+  // calcNowLesson()
+
+  // setInterval(calcNowLesson, 1000)
+
   
   //чёт урок, нечёт перемена
 
