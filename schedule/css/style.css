@@ -1,0 +1,80 @@
+*{margin: 0; padding: 0; box-sizing: border-box}
+
+@font-face{
+  font-family: 'NeverMindCompact';
+  src: url('../font/NeverMindCompact-Regular.ttf');
+  font-weight: normal;
+}
+
+@font-face{
+  font-family: 'NeverMindCompact';
+  src: url('../font/NeverMindCompact-Bold.ttf');
+  font-weight: bold;
+}
+
+body{
+  background: #111112;
+  color: white;
+
+  font-size: 6rem;
+  font-family: 'NeverMindCompact';
+  /*justify-content: center;*/
+  align-items: center;
+}
+
+.diary_content, .day, body{
+  display: flex;
+  flex-flow: column nowrap;
+}
+
+.diary_content{
+  gap: 4rem;
+  /* width: 80%; */
+}
+
+.day{
+  border-bottom: 2px solid white;
+}
+
+.day_today{
+  background: #545454;
+  text-align: center;
+}
+
+.lesson:first-child{
+  border: none;
+}
+
+.lesson{
+  border-top: 1px solid white;
+  display: flex;
+
+  & span:first-child{
+    flex: 4 1 10px;
+  }
+  & span:last-child{
+    flex: 1 1 10px;
+  }
+  
+}
+
+a{
+  width: 100vw;
+  margin-top: 8rem;
+  text-decoration: none;
+  color: black;
+  text-align: center;
+  font-weight: bold;
+  background: #545454;
+  line-height: 1.5;
+}
+
+body:has(.schedule) a{
+  position: absolute;
+  bottom: 0;
+}
+
+.schedule{
+  width: 80%;
+  width: 100%;
+}
