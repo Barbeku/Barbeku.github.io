@@ -37,6 +37,8 @@ const schedule = {
     'Общество',
     'Родной',
     'Русский',
+    'some',
+    'body',
   ],
 
   Пятница: [
@@ -50,9 +52,11 @@ const schedule = {
     'Физика',
   ]
 }
+const schoolDelay = 2
 
 function convertIntoMinute(string){
-  return (Number(string.split(':')[0]) * 60 + Number(string.split(':')[1]))
+  let [hours, minutes] = string.split(':')
+  return Number(hours)*60 + Number(minutes) + schoolDelay
 }
 let callSchedule = [
   '8:00', '8:40',
@@ -90,23 +94,14 @@ if(document.querySelector('.diary_content')){
 
 if(document.querySelector('.schedule')){
   const scheduleToday = document.querySelector('.schedule')
-  switch(day){
-    case 1:
-      day = 'Понедельник'
-      break;
-    case 2:
-      day = 'Вторник'
-      break;
-    case 3:
-      day = 'Среда'
-      break;
-    case 4:
-      day = 'Четверг'
-      break;
-    case 5:
-      day = 'Пятница'
-      break;
+  let days = {
+    1: 'Понедельник',
+    2: 'Вторник',
+    3: 'Среда',
+    4: 'Четверг',
+    5: 'Пятница',
   }
+  day = days[day]
 
   let countLesson = 0
   let lessons = schedule[day].reduce((totalString, item) => {
@@ -126,12 +121,12 @@ if(document.querySelector('.schedule')){
 
   function calcNowLesson(){
     let date = new Date()
-    let nowTime = date.getHours() * 60 + date.getMinutes()
+    let nowTime = date.getHours()*60 + date.getMinutes() + schoolDelay
     let timeToNextLesson = []
 
-    let numOfCurrentLesson = callSchedule.map((item, index, array) => {
+    let numOfCurrentLesson = callSchedule.map((item, index) => {
       if(item > nowTime){
-        timeToNextLesson.push(array[index] - nowTime)
+        timeToNextLesson.push(item - nowTime)
 
         return index
       }
@@ -140,20 +135,19 @@ if(document.querySelector('.schedule')){
 
     try{
       document.querySelector('.time_to_next_lesson').textContent = timeToNextLesson[0]
+
+      Array.from(document.querySelectorAll('span'), element => {
+        element.style.background = ''
+      })
       document.querySelectorAll('span')[numOfCurrentLesson - 1].style.background = 'rgba(255, 70, 70, 0.8)'
     }
     catch(error){
       console.warn(error)
     }
-    finally{
-      window.requestAnimationFrame(calcNowLesson)
-    }
   }
-  window.requestAnimationFrame(calcNowLesson)
+  calcNowLesson()
 
-  // calcNowLesson()
-
-  // setInterval(calcNowLesson, 1000)
+  setInterval(calcNowLesson, 100)
 
   
   //чёт урок, нечёт перемена
