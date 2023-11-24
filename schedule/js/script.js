@@ -50,11 +50,11 @@ const schedule = {
     'Физика',
   ]
 }
-const schoolDelay = 2
+const schoolDelay = -2
 
 function convertIntoMinute(string){
   let [hours, minutes] = string.split(':')
-  return Number(hours)*60 + Number(minutes) + schoolDelay
+  return Number(hours)*60 + Number(minutes)
 }
 let callSchedule = [
   '8:00', '8:40',
